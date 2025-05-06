@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Transports valuables from the deposit to the treasure room
- */
 public class ValuableTransporter implements Runnable {
     private final String name;
     private final DepositAdapter deposit;
@@ -20,12 +17,6 @@ public class ValuableTransporter implements Runnable {
     private final Logger logger = Logger.getInstance();
     private final Random random = new Random();
 
-    /**
-     * Creates a new valuable transporter
-     * @param name The name of the transporter
-     * @param deposit The deposit to take valuables from
-     * @param treasureRoomDoor The door to the treasure room
-     */
     public ValuableTransporter(String name, DepositAdapter deposit, TreasureRoomDoor treasureRoomDoor) {
         this.name = name;
         this.deposit = deposit;
@@ -34,15 +25,13 @@ public class ValuableTransporter implements Runnable {
 
     @Override
     public void run() {
-        logger.log(name, "Started transporting valuables");
+        logger.log(name, "Started moving valuables");
 
         try {
             while (!Thread.interrupted()) {
-                // Generate random target worth
-                int targetWorth = random.nextInt(151) + 50; // Between 50 and 200
-                logger.log(name, "Planning to transport valuables worth at least " + targetWorth);
+                int targetWorth = random.nextInt(151) + 50;
+                logger.log(name, "Planning to drive valuables worth at least " + targetWorth);
 
-                // Collect valuables from deposit
                 List<Valuable> collected = new ArrayList<>();
                 int collectedWorth = 0;
 
@@ -53,27 +42,23 @@ public class ValuableTransporter implements Runnable {
                     logger.log(name, "Collected " + valuable.getName() + " (Total: " + collectedWorth + "/" + targetWorth + ")");
                 }
 
-                logger.log(name, "Transporting valuables worth " + collectedWorth + " to treasure room");
+                logger.log(name, "Driving valuables worth " + collectedWorth + " to treasure room");
 
-                // Travel to treasure room (simulate with sleep)
                 Thread.sleep((long) (Math.random() * 1000) + 500);
 
-                // Add valuables to treasure room
                 TreasureRoomWrite treasureRoom = treasureRoomDoor.acquireWriteAccess(name);
                 try {
-                    logger.log(name, "Adding " + collected.size() + " valuables to treasure room");
+                    logger.log(name, "Storing " + collected.size() + " valuables in treasure room");
 
-                    // Simulate time to add each valuable
                     for (Valuable valuable : collected) {
                         Thread.sleep(100);
                         treasureRoom.addValuable(valuable);
-                        logger.log(name, "Added " + valuable.getName() + " to treasure room");
+                        logger.log(name, "Stored " + valuable.getName() + " in treasure room");
                     }
                 } finally {
                     treasureRoomDoor.releaseWriteAccess(name);
                 }
 
-                // Rest before next transport
                 Thread.sleep((long) (Math.random() * 2000) + 1000);
             }
         } catch (InterruptedException e) {

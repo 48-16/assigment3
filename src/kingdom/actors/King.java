@@ -10,19 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * The King who throws parties using valuables from the treasure room
- */
 public class King implements Runnable {
     private final TreasureRoomDoor treasureRoomDoor;
     private final Logger logger = Logger.getInstance();
     private final Random random = new Random();
     private int partiesThrown = 0;
 
-    /**
-     * Creates a new king
-     * @param treasureRoomDoor The door to the treasure room
-     */
     public King(TreasureRoomDoor treasureRoomDoor) {
         this.treasureRoomDoor = treasureRoomDoor;
     }
@@ -33,14 +26,11 @@ public class King implements Runnable {
 
         try {
             while (!Thread.interrupted()) {
-                // Sleep for a while before planning a party
                 Thread.sleep((long) (Math.random() * 5000) + 5000);
 
-                // Generate random party cost
                 int partyWorth = random.nextInt(101) + 50; // Between 50 and 150
                 logger.log("King", "Planning a party costing " + partyWorth);
 
-                // Check if there are enough valuables
                 TreasureRoomRead treasureRoomRead = treasureRoomDoor.acquireReadAccess("King");
                 boolean enoughValuables = false;
 
@@ -49,21 +39,19 @@ public class King implements Runnable {
                     enoughValuables = totalWorth >= partyWorth;
 
                     if (!enoughValuables) {
-                        logger.log("King", "Not enough valuables for a party. Need " + partyWorth +
-                                ", but only have " + totalWorth + ". The King is disappointed.");
+                        logger.log("King", "Not enough money for a party. Need " + partyWorth +
+                                ", but only have " + totalWorth + ". The King is very  disappointed someone gonna die.");
                         continue;
                     }
                 } finally {
                     treasureRoomDoor.releaseReadAccess("King");
                 }
 
-                // Acquire write access to take valuables
                 TreasureRoomWrite treasureRoom = treasureRoomDoor.acquireWriteAccess("King");
 
                 try {
                     logger.log("King", "Taking valuables for a party");
 
-                    // Take valuables for the party
                     List<Valuable> partyValuables = new ArrayList<>();
                     int collectedWorth = 0;
 
@@ -71,8 +59,7 @@ public class King implements Runnable {
                         Valuable valuable = treasureRoom.takeValuable();
 
                         if (valuable == null) {
-                            // Not enough valuables, put back the ones taken
-                            logger.log("King", "Not enough valuables, putting back " + partyValuables.size() + " items");
+                            logger.log("King", "Not enough money, putting back " + partyValuables.size() + " items");
                             treasureRoom.addValuables(partyValuables);
                             enoughValuables = false;
                             break;
@@ -81,7 +68,6 @@ public class King implements Runnable {
                         partyValuables.add(valuable);
                         collectedWorth += valuable.getWorth();
 
-                        // Simulate taking time to select valuables
                         Thread.sleep(200);
                     }
 
@@ -92,11 +78,9 @@ public class King implements Runnable {
                     treasureRoomDoor.releaseWriteAccess("King");
                 }
 
-                // Throw the party if enough valuables were collected
                 if (enoughValuables) {
                     partiesThrown++;
                     logger.log("King", "THROWING A GRAND PARTY! (Party #" + partiesThrown + ")");
-                    // Party time!
                     Thread.sleep((long) (Math.random() * 3000) + 2000);
                     logger.log("King", "Party finished. That was delightful!");
                 }

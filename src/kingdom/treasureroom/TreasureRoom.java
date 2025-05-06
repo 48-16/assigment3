@@ -1,27 +1,20 @@
 package kingdom.treasureroom;
 
-import dk.ict.eaaa.MyArrayList;
+import utility.collection.ArrayList;
 import kingdom.valuables.Valuable;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The treasure room where valuables are stored
- */
 public class TreasureRoom implements TreasureRoomWrite {
-    private final MyArrayList<Valuable> valuables;
+    private final ArrayList<Valuable> valuables;
 
-    /**
-     * Creates a new treasure room
-     */
     public TreasureRoom() {
-        this.valuables = new MyArrayList<>();
+        this.valuables = new ArrayList<>();
     }
 
     @Override
     public synchronized List<Valuable> lookAtValuables() {
-        List<Valuable> copy = new ArrayList<>();
+        List<Valuable> copy = new java.util.ArrayList<>();
         for (int i = 0; i < valuables.size(); i++) {
             copy.add(valuables.get(i));
         }
@@ -59,7 +52,7 @@ public class TreasureRoom implements TreasureRoomWrite {
 
     @Override
     public synchronized List<Valuable> takeValuables(int count) {
-        List<Valuable> taken = new ArrayList<>();
+        List<Valuable> taken = new java.util.ArrayList<>();
         int actualCount = Math.min(count, valuables.size());
 
         for (int i = 0; i < actualCount; i++) {

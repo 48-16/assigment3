@@ -18,8 +18,8 @@ public class MyArrayListTest {
 
     @Test
     public void testInitialSize() {
-        assertEquals("Initial size should be 0", 0, list.size());
-        assertTrue("List should be empty initially", list.isEmpty());
+        assertEquals("start size should be 0", 0, list.size());
+        assertTrue("List should be empty ", list.isEmpty());
     }
 
     @Test
@@ -37,13 +37,13 @@ public class MyArrayListTest {
         list.add("Item 1");
         list.add("Item 2");
 
-        assertEquals("Get should return correct item at index 0", "Item 1", list.get(0));
-        assertEquals("Get should return correct item at index 1", "Item 2", list.get(1));
+        assertEquals(" should return correct item at index 0", "Item 1", list.get(0));
+        assertEquals(" should return correct item at index 1", "Item 2", list.get(1));
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void testGetWithInvalidIndex() {
-        list.get(0); // Should throw exception when list is empty
+        list.get(0);
     }
 
     @Test
@@ -54,14 +54,14 @@ public class MyArrayListTest {
 
         String removed = list.remove(1);
 
-        assertEquals("Remove should return the removed item", "Item 2", removed);
-        assertEquals("Size should decrease after removal", 2, list.size());
-        assertEquals("Items should shift after removal", "Item 3", list.get(1));
+        assertEquals("remove should return the removed item", "Item 2", removed);
+        assertEquals("size should decrease after removal", 2, list.size());
+        assertEquals("items should shift after removal", "Item 3", list.get(1));
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void testRemoveWithInvalidIndex() {
-        list.remove(0); // Should throw exception when list is empty
+        list.remove(0);
     }
 
     @Test
@@ -69,26 +69,23 @@ public class MyArrayListTest {
         list.add("Item 1");
         list.add("Item 2");
 
-        // Manually clear the list since clear() doesn't exist
         while (!list.isEmpty()) {
             list.remove(0);
         }
 
-        assertEquals("Size should be 0 after clearing manually", 0, list.size());
-        assertTrue("List should be empty after clearing manually", list.isEmpty());
+        assertEquals("size should be 0 after clearing manually", 0, list.size());
+        assertTrue("list should be empty after clearing manually", list.isEmpty());
     }
 
 
     @Test
     public void testCapacityIncrease() {
-        // Fill the list to test capacity increase
         for (int i = 0; i < 20; i++) {
             list.add("Item " + i);
         }
 
-        assertEquals("All items should be added despite capacity changes", 20, list.size());
+        assertEquals("all items should be added despite capacity changes", 20, list.size());
 
-        // Check that all items are still accessible
         for (int i = 0; i < 20; i++) {
             assertEquals("Item " + i, list.get(i));
         }

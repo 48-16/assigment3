@@ -4,32 +4,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-/**
- * Factory for creating valuable items (implements Multiton pattern)
- */
 public class ValuableFactory {
     private static final Map<String, Valuable> valuableInstances = new HashMap<>();
     private static final Random random = new Random();
 
-    // Different types of valuables
     public static final String DIAMOND = "Diamond";
-    public static final String GOLD_NUGGET = "GoldNugget";
-    public static final String JEWEL = "Jewel";
+    public static final String GOLD_NUGGET = "Gold Nugget";
+    public static final String JEWEL = "Jewelery";
     public static final String RUBY = "Ruby";
-    public static final String WOODEN_COIN = "WoodenCoin";
+    public static final String COAL = "Coal";
 
-    // Worth of each valuable type
     private static final int DIAMOND_WORTH = 50;
     private static final int GOLD_NUGGET_WORTH = 30;
     private static final int JEWEL_WORTH = 40;
     private static final int RUBY_WORTH = 45;
-    private static final int WOODEN_COIN_WORTH = 5;
+    private static final int COAL_WORTH = 5;
 
-    /**
-     * Get a valuable instance by type (Multiton pattern)
-     * @param type The type of valuable
-     * @return The valuable instance
-     */
     public static synchronized Valuable getValuable(String type) {
         if (!valuableInstances.containsKey(type)) {
             switch (type) {
@@ -45,8 +35,8 @@ public class ValuableFactory {
                 case RUBY:
                     valuableInstances.put(type, new ValuableImpl(RUBY, RUBY_WORTH));
                     break;
-                case WOODEN_COIN:
-                    valuableInstances.put(type, new ValuableImpl(WOODEN_COIN, WOODEN_COIN_WORTH));
+                case COAL:
+                    valuableInstances.put(type, new ValuableImpl(COAL, COAL_WORTH));
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown valuable type: " + type);
@@ -55,10 +45,6 @@ public class ValuableFactory {
         return valuableInstances.get(type);
     }
 
-    /**
-     * Get a random valuable
-     * @return A random valuable instance
-     */
     public static Valuable getRandomValuable() {
         int randomValue = random.nextInt(100);
 
@@ -71,13 +57,10 @@ public class ValuableFactory {
         } else if (randomValue < 85) {
             return getValuable(GOLD_NUGGET);
         } else {
-            return getValuable(WOODEN_COIN);
+            return getValuable(COAL);
         }
     }
 
-    /**
-     * Private implementation of Valuable interface
-     */
     private static class ValuableImpl implements Valuable {
         private final String name;
         private final int worth;
