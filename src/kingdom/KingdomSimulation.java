@@ -65,6 +65,7 @@ public class KingdomSimulation {
             }
         }
 
-        logger.log("System", "Kingdom  destroyed.");
+        logger.log("System", "Kingdom " +
+                " destroyed.");
     }
 }

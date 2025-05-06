@@ -28,7 +28,7 @@ public class King implements Runnable {
             while (!Thread.interrupted()) {
                 Thread.sleep((long) (Math.random() * 5000) + 5000);
 
-                int partyWorth = random.nextInt(101) + 50; // Between 50 and 150
+                int partyWorth = random.nextInt(101) + 50;
                 logger.log("King", "Planning a party costing " + partyWorth);
 
                 TreasureRoomRead treasureRoomRead = treasureRoomDoor.acquireReadAccess("King");
